@@ -1,0 +1,143 @@
+openapi: "3.0.3"
+info:
+  title: "Katalog API"
+  description: "Preprost CRUD API za upravljanje artiklov v katalogu."
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8080/api/v1"
+
+paths:
+  /artikli:
+    get:
+      tags:
+        - "Artikli"
+      summary: "Pridobi vse artikle"
+      description: "Vrne seznam vseh artiklov v katalogu."
+      operationId: "getArtikli"
+      responses:
+        "200":
+          description: "Seznam artiklov je bil uspešno pridobljen."
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Artikel"
+    post:
+      tags:
+        - "Artikli"
+      summary: "Ustvari nov artikel"
+      description: "Doda nov artikel v katalog."
+      operationId: "createArtikel"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtikelInput"
+      responses:
+        "201":
+          description: "Artikel je bil uspešno ustvarjen."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artikel"
+        "400":
+          description: "Neveljavni podatki zahtevka."
+
+  /artikli/{id}:
+    parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Enolični identifikator artikla"
+        schema:
+          type: "string"
+    get:
+      tags:
+        - "Artikli"
+      summary: "Pridobi artikel glede na ID"
+      description: "Vrne posamezen artikel na podlagi njegovega enoličnega identifikatorja."
+      operationId: "getArtikelById"
+      responses:
+        "200":
+          description: "Artikel je bil uspešno najden."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artikel"
+        "404":
+          description: "Artikel ni bil najden."
+    put:
+      tags:
+        - "Artikli"
+      summary: "Posodobi obstoječi artikel"
+      description: "Posodobi podrobnosti obstoječega artikla."
+      operationId: "updateArtikel"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtikelInput"
+      responses:
+        "200":
+          description: "Artikel je bil uspešno posodobljen."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artikel"
+        "400":
+          description: "Neveljavni podatki zahtevka."
+        "404":
+          description: "Artikel ni bil najden."
+    delete:
+      tags:
+        - "Artikli"
+      summary: "Izbriši artikel"
+      description: "Odstrani artikel iz kataloga glede na njegov ID."
+      operationId: "deleteArtikel"
+      responses:
+        "204":
+          description: "Artikel je bil uspešno izbrisan (brez vsebine)."
+        "404":
+          description: "Artikel ni bil najden."
+
+components:
+  schemas:
+    Artikel:
+      type: "object"
+      required:
+        - "id"
+        - "ime"
+        - "cena"
+      properties:
+        id:
+          type: "string"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          description: "Enolični identifikator artikla."
+        ime:
+          type: "string"
+          example: "Jabolko"
+          description: "Ime artikla."
+        cena:
+          type: "number"
+          format: "double"
+          example: 1.25
+          description: "Cena artikla (decimalna vrednost)."
+
+    ArtikelInput:
+      type: "object"
+      required:
+        - "ime"
+        - "cena"
+      properties:
+        ime:
+          type: "string"
+          example: "Jabolko"
+          description: "Ime artikla."
+        cena:
+          type: "number"
+          format: "double"
+          example: 1.25
+          description: "Cena artikla (decimalna vrednost)."

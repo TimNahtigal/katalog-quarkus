@@ -21,12 +21,4 @@ mvn clean package
 mvn -pl katalog-rest quarkus:dev
 ```
 
-Aplikacija posluša na naslovu `http://localhost:8080`. Preizkusite obe končni
-točki:
-
-```shell
-curl http://localhost:8080/v1/katalog
-curl -X POST http://localhost:8080/v1/katalog \
-  -H 'Content-Type: application/json' \
-  -d '{"name":"example"}'
-```
+Aplikacija posluša na naslovu `http://localhost:8080`. Ima tudi SwaggerUI na naslovu `http://localhost:8080/q/swagger-ui/` z katerim lahko preiskušate končne točke. 
